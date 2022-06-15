@@ -8,10 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.convertorsytem.databinding.ItemRvCardBinding
 import com.example.convertorsytem.presentation.ui.nav_home.models.Card
 
-class CardRvAdapter:RecyclerView.Adapter<CardRvAdapter.MyCardVH>() {
+class CardRvAdapter(val listener : OnCardClickListener):
+    RecyclerView.Adapter<CardRvAdapter.MyCardVH>() {
 
     inner class MyCardVH(private val itemRvCardBinding : ItemRvCardBinding):
         RecyclerView.ViewHolder(itemRvCardBinding.root) {
+
+        init {
+            itemView.setOnClickListener {
+                listener.onClick(differConfig.currentList[absoluteAdapterPosition])
+            }
+        }
 
         fun onBind(card : Card) {
             itemRvCardBinding.apply {
@@ -56,5 +63,9 @@ class CardRvAdapter:RecyclerView.Adapter<CardRvAdapter.MyCardVH>() {
 
     override fun getItemCount() : Int {
         return differConfig.currentList.size
+    }
+
+    interface OnCardClickListener {
+        fun onClick(card : Card)
     }
 }

@@ -53,11 +53,20 @@ class CurrencyConvertorScreen:Fragment(R.layout.screen_currency_convertor) {
             if (price.isNotEmpty()) {
                 val spinnerValue = currencySp.selectedItemPosition
                 val spinnerValue1 = currencySp1.selectedItemPosition
+                var value : Double = 0.0
+                try {
+                    if (spinnerValue1 == args.position) {
+                        value = price.toInt() * currencyList[spinnerValue].cb_price!!.toDouble()
+                    } else {
+                        value =
+                            price.toInt() * currencyList[spinnerValue].cb_price!!.toDouble() / currencyList1[spinnerValue1].cb_price!!.toDouble()
+                    }
+                    tvValue.text = String.format("%1.2f" , value)
 
-                val value =
-                    price.toInt() * currencyList[spinnerValue].cb_price!!.toDouble() / currencyList1[spinnerValue1].cb_price!!.toDouble()
+                } catch (e : Exception) {
+                    showToast("Out of limit")
+                }
 
-                tvValue.text = String.format("%1.3f" , value)
 
             } else {
                 showToast("Enter price!")

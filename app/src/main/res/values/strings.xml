@@ -11,4 +11,11 @@
     <string name="add">Add</string>
     <string name="card">Card</string>
     <string name="enter_card_info">Enter card info</string>
+    <string name="nul">0000 0000 0000 0000</string>
+    <string name="card_holder_name">Card holder name</string>
+    <string name="card_number">Card number</string>
+    <string name="name">Name</string>
+    <string name="period_of_validity">Period of validity</string>
+    <string name="dd_yy">DD/YY</string>
+    <string name="total_balance">Total balance</string>
 </resources>
