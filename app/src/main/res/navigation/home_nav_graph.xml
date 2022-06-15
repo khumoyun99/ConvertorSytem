@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav"
+    app:startDestination="@id/homePage">
+
+    <fragment
+        android:id="@+id/homePage"
+        android:name="com.example.convertorsytem.presentation.ui.nav_home.HomePage"
+        tools:layout="@layout/page_home"
+        android:label="@string/home" >
+        <action
+            android:id="@+id/action_homePage_to_addCardScreen"
+            app:destination="@id/addCardScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCardScreen"
+        android:name="com.example.convertorsytem.presentation.ui.nav_home.sceens.AddCardScreen"
+        android:label="@string/add_card"
+        tools:layout="@layout/screen_add_card" />
+</navigation>

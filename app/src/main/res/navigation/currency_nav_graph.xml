@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/currency_nav"
+    app:startDestination="@id/currencyPage">
+
+    <fragment
+        android:id="@+id/currencyPage"
+        android:name="com.example.convertorsytem.presentation.ui.nav_currency.CurrencyPage"
+        android:label="Currency"
+        tools:layout="@layout/page_currency">
+        <action
+            android:id="@+id/action_currencyPage_to_currencyConvertorScreen"
+            app:destination="@id/currencyConvertorScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/currencyConvertorScreen"
+        android:name="com.example.convertorsytem.presentation.ui.nav_currency.screns.CurrencyConvertorScreen"
+        android:label="Currency convertor"
+        tools:layout="@layout/screen_currency_convertor" >
+        <argument
+            android:name="Currency"
+            app:argType="com.example.convertorsytem.presentation.ui.nav_currency.models.Currency" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
+</navigation>

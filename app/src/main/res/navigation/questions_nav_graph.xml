@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/questions_nav"
+    app:startDestination="@id/questionsPage">
+
+    <fragment
+        android:id="@+id/questionsPage"
+        android:name="com.example.convertorsytem.presentation.ui.nav_questions.QuestionsPage"
+        android:label="@string/questions"
+        tools:layout="@layout/page_questions">
+        <action
+            android:id="@+id/action_questionsPage_to_answersScreen"
+            app:destination="@id/answersScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/answersScreen"
+        android:name="com.example.convertorsytem.presentation.ui.nav_questions.screen.AnswersScreen"
+        android:label="@string/answers"
+        tools:layout="@layout/screen_answers" >
+        <argument
+            android:name="Question"
+            app:argType="com.example.convertorsytem.presentation.ui.nav_questions.models.Questions" />
+    </fragment>
+</navigation>
