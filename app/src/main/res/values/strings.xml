@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ConvertorSytem</string>
+    <string name="app_name">Convertor</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_card">Add card</string>
@@ -18,4 +18,5 @@
     <string name="period_of_validity">Period of validity</string>
     <string name="dd_yy">DD/YY</string>
     <string name="total_balance">Total balance</string>
+    <string name="_01_01">01/01</string>
 </resources>

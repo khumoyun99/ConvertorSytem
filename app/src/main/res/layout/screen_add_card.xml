@@ -75,6 +75,7 @@
                     <EditText
                         android:id="@+id/etCardNumber"
                         android:layout_width="match_parent"
+                        android:maxLength="16"
                         android:layout_height="wrap_content"
                         android:hint="@string/nul"
                         android:inputType="number"
@@ -115,6 +116,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/name"
+                        android:maxLines="20"
                         android:inputType="text"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
@@ -156,6 +158,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/dd_yy"
+                        android:maxLength="5"
                         android:inputType="date"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
@@ -170,6 +173,7 @@
 
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"

@@ -69,6 +69,7 @@
         </com.google.android.material.tabs.TabLayout>
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvExchangeMoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"

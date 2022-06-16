@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.convertorsytem.R
+import com.example.convertorsytem.data.database.AppDatabase
 import com.example.convertorsytem.data.remote.ApiClient
 import com.example.convertorsytem.data.remote.response.CurrencyResponse
 import com.example.convertorsytem.databinding.ScreenCurrencyConvertorBinding
@@ -19,6 +20,7 @@ import com.example.convertorsytem.presentation.ui.nav_currency.models.Currency
 import com.example.convertorsytem.presentation.view_model.CurrencyViewModel
 import com.example.convertorsytem.presentation.view_model.CurrencyViewModelFactory
 import com.example.convertorsytem.repository.CurrencyRepository
+import com.example.convertorsytem.repository.DatabaseRepository
 import com.example.convertorsytem.utils.NetworkHelper
 import com.example.convertorsytem.utils.scope
 import com.example.convertorsytem.utils.showToast
@@ -41,7 +43,8 @@ class CurrencyConvertorScreen:Fragment(R.layout.screen_currency_convertor) {
         currencyViewModel = ViewModelProvider(
             this@CurrencyConvertorScreen , CurrencyViewModelFactory(
                 CurrencyRepository(ApiClient.apiService) ,
-                NetworkHelper(requireContext())
+                NetworkHelper(requireContext()) ,
+                DatabaseRepository(AppDatabase.getInstance(requireContext()).cardDao())
             )
         )[CurrencyViewModel::class.java]
 

@@ -22,7 +22,7 @@ class CardRvAdapter(val listener : OnCardClickListener):
 
         fun onBind(card : Card) {
             itemRvCardBinding.apply {
-                tvMoney.text = card.money
+                tvMoney.text = "${card.money} UZS"
                 tvCardNumber.text = card.number
                 tvCardHolderName.text = card.holderName
                 tvDate.text = card.date
@@ -32,7 +32,7 @@ class CardRvAdapter(val listener : OnCardClickListener):
     }
 
     fun mySubmitList(carList : ArrayList<Card>) {
-        differConfig.submitList(carList)
+        differConfig.submitList(carList.distinct().toList())
     }
 
     private val diffCallback = object:DiffUtil.ItemCallback<Card>() {

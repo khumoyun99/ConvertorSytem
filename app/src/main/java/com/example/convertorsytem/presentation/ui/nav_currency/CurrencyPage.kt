@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.convertorsytem.R
+import com.example.convertorsytem.data.database.AppDatabase
 import com.example.convertorsytem.data.remote.ApiClient
 import com.example.convertorsytem.data.remote.response.CurrencyResponse
 import com.example.convertorsytem.databinding.PageCurrencyBinding
@@ -17,6 +18,7 @@ import com.example.convertorsytem.presentation.ui.nav_currency.models.Currency
 import com.example.convertorsytem.presentation.view_model.CurrencyViewModel
 import com.example.convertorsytem.presentation.view_model.CurrencyViewModelFactory
 import com.example.convertorsytem.repository.CurrencyRepository
+import com.example.convertorsytem.repository.DatabaseRepository
 import com.example.convertorsytem.utils.NetworkHelper
 import com.example.convertorsytem.utils.scope
 import com.google.android.material.snackbar.Snackbar
@@ -36,7 +38,9 @@ class CurrencyPage:Fragment(R.layout.page_currency) {
         currencyViewModel = ViewModelProvider(
             this@CurrencyPage , CurrencyViewModelFactory(
                 CurrencyRepository(ApiClient.apiService) ,
-                NetworkHelper(requireContext())
+                NetworkHelper(requireContext()) ,
+                DatabaseRepository(AppDatabase.getInstance(requireContext()).cardDao())
+
             )
         )[CurrencyViewModel::class.java]
 
