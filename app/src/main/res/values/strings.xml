@@ -19,4 +19,5 @@
     <string name="dd_yy">DD/YY</string>
     <string name="total_balance">Total balance</string>
     <string name="_01_01">01/01</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -3,7 +3,6 @@ package com.example.convertorsytem.presentation.ui.nav_currency.screns
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider

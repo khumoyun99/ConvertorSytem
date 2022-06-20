@@ -2,12 +2,14 @@ package com.example.convertorsytem.presentation.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.viewModelScope
 import com.example.convertorsytem.data.database.entity.CardEntity
 import com.example.convertorsytem.repository.DatabaseRepository
 import com.example.convertorsytem.utils.NetworkHelper
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class CardViewModel(
     private val databaseRepository : DatabaseRepository ,
@@ -16,6 +18,7 @@ class CardViewModel(
 ):ViewModel() {
 
     val addCardDBLiveData = MutableLiveData<Boolean>()
+//    val deleteCardDBLiveData = MutableLiveData<Boolean>()
     val getAllCardInfoLivaData = MutableLiveData<List<CardEntity>>()
     val errorLiveData = MutableLiveData<String>()
 
@@ -28,6 +31,11 @@ class CardViewModel(
             errorLiveData.value = "No Internet Connection"
         }
     }
+
+//    fun deleteCard(cardEntity : CardEntity) {
+//        databaseRepository.deleteCard(cardEntity)
+//        deleteCardDBLiveData.value = true
+//    }
 
     suspend fun getAllCardInfo(){
         if(networkHelper.isNetworkConnected()){

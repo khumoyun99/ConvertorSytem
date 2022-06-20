@@ -1,7 +1,10 @@
 package com.example.convertorsytem.presentation.ui.nav_home
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -10,12 +13,10 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.convertorsytem.R
 import com.example.convertorsytem.data.database.AppDatabase
-import com.example.convertorsytem.data.database.entity.CardEntity
 import com.example.convertorsytem.data.remote.ApiClient
 import com.example.convertorsytem.data.remote.response.CurrencyResponse
 import com.example.convertorsytem.databinding.BottomSheetDialogBinding
 import com.example.convertorsytem.databinding.PageHomeBinding
-import com.example.convertorsytem.presentation.ui.nav_currency.models.Currency
 import com.example.convertorsytem.presentation.ui.nav_home.adapter.AdvertisingRvAdapter
 import com.example.convertorsytem.presentation.ui.nav_home.adapter.CardRvAdapter
 import com.example.convertorsytem.presentation.ui.nav_home.adapter.ServiceRvAdapter
@@ -47,119 +48,145 @@ class HomePage:Fragment(R.layout.page_home) {
     override fun onViewCreated(view : View , savedInstanceState : Bundle?) = binding.scope {
         super.onViewCreated(view , savedInstanceState)
 
-        setHasOptionsMenu(true)
-        cardList = ArrayList()
+        try {
 
-        cardViewModel = ViewModelProvider(
-            this@HomePage ,
-            CurrencyViewModelFactory(
-                CurrencyRepository(ApiClient.apiService) ,
-                NetworkHelper(requireContext()) ,
-                DatabaseRepository(AppDatabase.getInstance(requireContext()).cardDao())
+            setHasOptionsMenu(true)
+            cardList = ArrayList()
+
+            cardViewModel = ViewModelProvider(
+                this@HomePage ,
+                CurrencyViewModelFactory(
+                    CurrencyRepository(ApiClient.apiService) ,
+                    NetworkHelper(requireContext()) ,
+                    DatabaseRepository(AppDatabase.getInstance(requireContext()).cardDao())
+                )
+            )[CardViewModel::class.java]
+
+            currencyViewModel = ViewModelProvider(
+                this@HomePage ,
+                CurrencyViewModelFactory(
+                    CurrencyRepository(ApiClient.apiService) ,
+                    NetworkHelper(requireContext()) ,
+                    DatabaseRepository(AppDatabase.getInstance(requireContext()).cardDao())
+                )
+            )[CurrencyViewModel::class.java]
+
+            lifecycleScope.launch {
+                currencyViewModel.getCurrency()
+                cardViewModel.getAllCardInfo()
+            }
+
+            currencyViewModel.errorLiveData.observe(
+                viewLifecycleOwner , Observer {
+                    showToast(it.toString())
+                }
             )
-        )[CardViewModel::class.java]
 
-        currencyViewModel = ViewModelProvider(
-            this@HomePage ,
-            CurrencyViewModelFactory(
-                CurrencyRepository(ApiClient.apiService) ,
-                NetworkHelper(requireContext()) ,
-                DatabaseRepository(AppDatabase.getInstance(requireContext()).cardDao())
-            )
-        )[CurrencyViewModel::class.java]
 
-        lifecycleScope.launch {
-            currencyViewModel.getCurrency()
-            cardViewModel.getAllCardInfo()
+            loadData()
+
+            advertisingRvAdapter = AdvertisingRvAdapter()
+            rvAdvertising.adapter = advertisingRvAdapter
+
+            serviceRvAdapter = ServiceRvAdapter()
+            rvServices.setHasFixedSize(true)
+            rvServices.adapter = serviceRvAdapter
+
+        } catch (e : Exception) {
+            showToast(e.message.toString())
         }
 
-
-
-        loadData()
-
-        advertisingRvAdapter = AdvertisingRvAdapter()
-        rvAdvertising.adapter = advertisingRvAdapter
-
-        serviceRvAdapter = ServiceRvAdapter()
-        rvServices.setHasFixedSize(true)
-        rvServices.adapter = serviceRvAdapter
     }
 
     private fun loadData() {
-        currencyViewModel.getCurrencyLiveData.observe(
-            viewLifecycleOwner , Observer {
-                it.forEach { currencyResponse ->
-                    if (currencyResponse.code == "EUR") {
-                        currencyEur = currencyResponse
-                    }
-                    if (currencyResponse.code == "USD") {
-                        currencyUSD = currencyResponse
+
+        try {
+            currencyViewModel.getCurrencyLiveData.observe(
+                viewLifecycleOwner , Observer {
+                    it.forEach { currencyResponse ->
+                        if (currencyResponse.code == "EUR") {
+                            currencyEur = currencyResponse
+                        }
+                        if (currencyResponse.code == "USD") {
+                            currencyUSD = currencyResponse
+                        }
                     }
                 }
-            }
-        )
+            )
 
-        cardViewModel.getAllCardInfoLivaData.observe(
-            viewLifecycleOwner , Observer {
-                it.forEach {
-                    cardList.add(
-                        Card(
-                            id = it.id ,
-                            money = it.money.toString() ,
-                            number = it.number ,
-                            holderName = it.holderName ,
-                            date = it.date
+            cardViewModel.getAllCardInfoLivaData.observe(
+                viewLifecycleOwner , Observer {
+                    it.forEach {
+                        cardList.add(
+                            Card(
+                                id = it.id ,
+                                money = it.money.toString() ,
+                                number = it.number ,
+                                holderName = it.holderName ,
+                                date = it.date
+                            )
                         )
-                    )
-                }
-                cardRvAdapter = CardRvAdapter(object:CardRvAdapter.OnCardClickListener {
-                    override fun onClick(card : Card) {
-                        val dialog = BottomSheetDialog(requireContext() , R.style.SheetDialog)
-                        val bottomSheetDialogBinding =
-                            BottomSheetDialogBinding.inflate(layoutInflater)
-                        dialog.setContentView(bottomSheetDialogBinding.root)
+                    }
+                    cardRvAdapter =
+                        CardRvAdapter(requireContext() , object:CardRvAdapter.OnCardClickListener {
+                            override fun onClick(card : Card) {
+                                val dialog =
+                                    BottomSheetDialog(requireContext() , R.style.SheetDialog)
+                                val bottomSheetDialogBinding =
+                                    BottomSheetDialogBinding.inflate(layoutInflater)
+                                dialog.setContentView(bottomSheetDialogBinding.root)
 
-                        bottomSheetDialogBinding.tabCurrency.addOnTabSelectedListener(object:
-                            TabLayout.OnTabSelectedListener {
-                            override fun onTabSelected(tab : TabLayout.Tab?) {
-                                when (tab?.position) {
-                                    0 -> {
-                                        bottomSheetDialogBinding.tvExchangeMoney.text = "100000.00"
+                                bottomSheetDialogBinding.tabCurrency.addOnTabSelectedListener(object:
+                                    TabLayout.OnTabSelectedListener {
+                                    override fun onTabSelected(tab : TabLayout.Tab?) {
+                                        when (tab?.position) {
+                                            0 -> {
+                                                bottomSheetDialogBinding.tvExchangeMoney.text =
+                                                    "100000.00"
+                                            }
+                                            1 -> {
+                                                val value =
+                                                    (1000000.0 / currencyEur.nbu_cell_price!!.toDouble())
+                                                bottomSheetDialogBinding.tvExchangeMoney.text =
+                                                    "${String.format("%1.2f" , value)} EUR"
+
+                                            }
+                                            2 -> {
+                                                val value =
+                                                    1000000.0 / currencyUSD.nbu_cell_price!!.toDouble()
+                                                bottomSheetDialogBinding.tvExchangeMoney.text =
+                                                    "${String.format("%1.2f" , value)} USD"
+
+                                            }
+                                        }
                                     }
-                                    1 -> {
-                                        val value =
-                                            (1000000.0 / currencyEur.nbu_cell_price!!.toDouble())
-                                        bottomSheetDialogBinding.tvExchangeMoney.text =
-                                            "${String.format("%1.2f" , value)} EUR"
+
+                                    override fun onTabUnselected(tab : TabLayout.Tab?) {
 
                                     }
-                                    2 -> {
-                                        val value =
-                                            1000000.0 / currencyUSD.nbu_cell_price!!.toDouble()
-                                        bottomSheetDialogBinding.tvExchangeMoney.text =
-                                            "${String.format("%1.2f" , value)} USD"
+
+                                    override fun onTabReselected(tab : TabLayout.Tab?) {
 
                                     }
-                                }
+                                })
+                                dialog.show()
+
                             }
 
-                            override fun onTabUnselected(tab : TabLayout.Tab?) {
-
-                            }
-
-                            override fun onTabReselected(tab : TabLayout.Tab?) {
-
+                            override fun onDelete(card : Card , pos : Int) {
+                                showToast("Soon")
                             }
                         })
-                        dialog.show()
+                    cardRvAdapter.mySubmitList(cardList)
 
-                    }
-                })
-                cardRvAdapter.mySubmitList(cardList)
+                    binding.rvCards.adapter = cardRvAdapter
+                }
+            )
 
-                binding.rvCards.adapter = cardRvAdapter
-            }
-        )
+
+        } catch (e : Exception) {
+            showToast(e.message.toString())
+        }
 
     }
 

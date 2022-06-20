@@ -3,11 +3,12 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter(){
-            content{
-                includeModule("com.theartofdev.edmodo","android-image-cropper")
-            }
-        }
+        jcenter()
+//        jcenter(){
+//            content{
+//                includeModule("com.theartofdev.edmodo","android-image-cropper")
+//            }
+//        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.3'

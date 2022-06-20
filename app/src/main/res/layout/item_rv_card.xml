@@ -3,15 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    android:layout_marginHorizontal="5dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp"
-    android:layout_marginHorizontal="5dp"
     app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/card_background_shape">
+
+        <ImageView
+            android:id="@+id/imgThreeDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_more_vert"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="@id/imgVerifyIcon"
+            app:layout_constraintLeft_toLeftOf="@id/imgVerifyIcon"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvCard"
@@ -26,6 +36,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/imgVerifyIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -57,8 +68,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:hint="0000 0000 0000 0000"
-            android:textColorHint="@color/white"
             android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@id/tvCardHolderName"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -71,8 +82,8 @@
             android:layout_marginStart="15dp"
             android:hint="@string/name"
             android:textAllCaps="true"
-            android:textColorHint="@color/white"
             android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -88,7 +99,6 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/tvCardNumber"
             app:layout_constraintRight_toRightOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

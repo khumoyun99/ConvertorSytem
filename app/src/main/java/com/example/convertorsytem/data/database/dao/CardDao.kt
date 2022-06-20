@@ -1,10 +1,8 @@
 package com.example.convertorsytem.data.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.convertorsytem.data.database.entity.CardEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CardDao {
@@ -13,5 +11,8 @@ interface CardDao {
     fun addCard(cardEntity : CardEntity)
 
     @Query("select * from cardentity")
-    fun getAllCardInfo() : List<CardEntity>
+    fun getAllCardInfo() :List<CardEntity>
+
+//    @Delete
+//    fun deleteCard(cardEntity : CardEntity)
 }

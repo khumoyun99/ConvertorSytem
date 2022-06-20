@@ -11,15 +11,18 @@ class DatabaseRepository(private val cardDao : CardDao) {
 
     fun addCardDB(cardEntity : CardEntity) = cardDao.addCard(cardEntity)
 
-    suspend fun getAllCardInfo() :Flow<Result<List<CardEntity>>> = flow {
+    suspend fun getAllCardInfo() : Flow<Result<List<CardEntity>>> = flow {
         val data = cardDao.getAllCardInfo()
 
-        if(data.isNotEmpty()){
+        if (data.isNotEmpty()) {
             emit(Result.success(data))
-        }else{
+        } else {
             emit(Result.failure(Throwable("Database empty")))
         }
     }.flowOn(Dispatchers.IO)
 
+//    fun deleteCard(cardEntity : CardEntity) {
+//        cardDao.deleteCard(cardEntity)
+//    }
 
 }

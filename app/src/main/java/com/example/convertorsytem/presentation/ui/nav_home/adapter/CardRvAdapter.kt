@@ -1,14 +1,17 @@
 package com.example.convertorsytem.presentation.ui.nav_home.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.convertorsytem.R
 import com.example.convertorsytem.databinding.ItemRvCardBinding
 import com.example.convertorsytem.presentation.ui.nav_home.models.Card
 
-class CardRvAdapter(val listener : OnCardClickListener):
+class CardRvAdapter(val context : Context , val listener : OnCardClickListener):
     RecyclerView.Adapter<CardRvAdapter.MyCardVH>() {
 
     inner class MyCardVH(private val itemRvCardBinding : ItemRvCardBinding):
@@ -17,6 +20,20 @@ class CardRvAdapter(val listener : OnCardClickListener):
         init {
             itemView.setOnClickListener {
                 listener.onClick(differConfig.currentList[absoluteAdapterPosition])
+            }
+
+            itemRvCardBinding.imgThreeDots.setOnClickListener {
+                val popupMenu : PopupMenu = PopupMenu(context , itemRvCardBinding.imgThreeDots)
+                popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
+                popupMenu.setOnMenuItemClickListener {
+                    when(it.itemId){
+                        R.id.itemDelete->{
+                            listener.onDelete(differConfig.currentList[absoluteAdapterPosition],absoluteAdapterPosition)
+                        }
+                    }
+                    true
+                }
+                popupMenu.show()
             }
         }
 
@@ -67,5 +84,6 @@ class CardRvAdapter(val listener : OnCardClickListener):
 
     interface OnCardClickListener {
         fun onClick(card : Card)
+        fun onDelete(card : Card,pos:Int)
     }
 }
